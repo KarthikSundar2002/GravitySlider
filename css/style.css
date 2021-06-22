@@ -1,0 +1,79 @@
+* {
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #f1e9db;
+    color: black;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+#canvas {
+
+    border-radius: 5 px;
+    background-color: #716A5C;
+}
+
+#HighScore {
+    font-size: 20px;
+}
+
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-align: center;
+}
+
+#overlay #card {
+    background-color: white;
+    width: 600px;
+    height: 250px;
+    border-radius: 5px;
+    animation: cardIn 1s forwards;
+    display: none;
+}
+
+#overlay #card > #Score {
+    font-size: 50px;
+    margin-top: 10px;
+    user-select: none;
+}
+
+#overlay #card > button {
+    outline: none;
+    color: white;
+    border: none;
+    background-color: #1a8cff;
+    padding: 10px;
+    width: 90%;
+    border-radius: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+
+@keyframes cardIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0px);
+    }
+}
