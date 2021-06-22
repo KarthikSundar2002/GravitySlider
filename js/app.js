@@ -5,6 +5,7 @@ const ctx = canvas.getContext("2d");
 const card = document.getElementById("card");
 const cardScore = document.getElementById("card-score");
 const HighScore = document.getElementById("HighScore");
+
 // *Interface Variables
 const wallThickness = 200;
 const playAreaHeight = canvas.width - 2*wallThickness;
@@ -13,9 +14,11 @@ const SwitchFrames = 20;
 const intervalTime = 1000;
 let ObstacleSpeed = 10;
 
+// *Score Variables
 let score = 0;
 let scoreIncrement = 0;
 let canScore = true;
+
 // *Utility : GetRandomNumber
 function RandomNumberGenerator(min,max){
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -28,13 +31,16 @@ function drawBackground() {
     ctx.fillRect(0,canvas.height - wallThickness,canvas.width,wallThickness)
 }
 
-function Score() {
-    ctx.font = "80px Arial";
-    ctx.fillStyle = "red";
-    let scoreString = score.toString();
-    let xOffset  = ((scoreString.length -1) * 20);
-    ctx.fillText(scoreString,280-xOffset,100);
-}
+
+// A function to draw score on screen
+// function Score() {
+//     ctx.font = "80px Arial";
+//     ctx.fillStyle = "red";
+//     let scoreString = score.toString();
+//     let xOffset  = ((scoreString.length -1) * 20);
+//     ctx.fillText(scoreString,280-xOffset,100);
+// }
+
 
 // *Player Class
 class Player {
@@ -110,6 +116,19 @@ class Player {
                 this.counterRotation();
             }
         }
+        // if (this.difficulty == "medium") {
+
+        //     ctx.beginPath();
+        //     ctx.moveTo(this.x,this.y);
+        //     ctx.lineTo(this.x + this.width, this.y);
+        //     ctx.lineTo(this.x + (this.width/2) , this.y - this.height);
+        //     ctx.lineTo(this.x,this.y);
+        //     ctx.fill();
+        //     ctx.closePath();
+        //     if (this.shouldSwitch) {
+        //         this.counterRotation();
+        //     }
+        // }
     }
 }
 
@@ -124,6 +143,7 @@ class Hole {
         if (pos == 1) {
             this.y = canvas.height - wallThickness
         }
+        this.type = "Hole";
         this.size = size;
         this.color = "#716A5C";
         this.speed = speed;
@@ -139,6 +159,26 @@ class Hole {
     }
 }
 
+class Block {
+    constructor(height,speed){
+        this.x = canvas.width + 70;
+        this.type = "block";
+        this.y = canvas.height - wallThickness - height;
+        this.width = 70;
+        this.height = height;
+        this.color = "black";
+        this.speed = speed;
+    }
+
+    draw(){
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x,this.y,this.width,this.height);
+    }
+    slide(){
+        this.draw();
+        this.x -= this.speed;
+    }
+}
 let player = new Player("easy",60,60,"#5DB7DE");
 let HolesArray = [];
 function startGame() {
@@ -159,7 +199,13 @@ function restartGame(button){
 }
 function generateBlocks() {
     let timeDelay = intervalTime;
-    HolesArray.push(new Hole(RandomNumberGenerator(100,200),RandomNumberGenerator(0,1),ObstacleSpeed));
+    let i = RandomNumberGenerator(0,1);
+    if (i == 0) {
+        HolesArray.push(new Hole(RandomNumberGenerator(100,200),RandomNumberGenerator(0,1),ObstacleSpeed));
+    }else if (i == 1) {
+        HolesArray.push(new Block(RandomNumberGenerator(100,200),ObstacleSpeed));
+    }
+
     setTimeout(generateBlocks, timeDelay);
 }
 
@@ -180,8 +226,8 @@ function animate() {
 
     HolesArray.forEach((hole,index) => {
         hole.slide();
-
-        if (player.x <= hole.x + hole.size && player.x >= hole.x) {
+        if (hole.type == "Hole") {
+            if (player.x <= hole.x + hole.size && player.x >= hole.x) {
 
                 if (player.y == hole.y + wallThickness || player.y + player.height== hole.y) {
                     if (localStorage.getItem("HighScore") == null) {
@@ -204,20 +250,63 @@ function animate() {
                     card.style.display = "block";
                     cancelAnimationFrame(animationId);
                 }
+            }
+            if (player.x >= hole.x + hole.size && canScore) {
+                canScore = false;
+                score++;
+                scoreIncrement++;
+            }
+
+            if ((hole.x + hole.size) <= 0) {
+                canScore = true;
+                setTimeout(() => {
+                    HolesArray.splice(index,1);
+                }, 0);
+            }
         }
 
-        if (player.x >= hole.x + hole.size && canScore) {
-            canScore = false;
-            score++;
-            scoreIncrement++;
+
+        if (hole.type == "block") {
+            if (player.x - 10 <= hole.x + hole.width && player.x + 10 >= hole.x) {
+
+                if (player.y + 10 >= hole.y && player.y - 10<= hole.y + hole.height) {
+                    if (localStorage.getItem("HighScore") == null) {
+                        localStorage.setItem("HighScore",score);
+                        HighScore.innerText = "Thanks for first trying out the game"
+                    }else{
+                        currentHighScore = localStorage.getItem("HighScore");
+                        if (currentHighScore > score) {
+                            HighScore.innerText = `Better Luck Next Time, the current high score is ${currentHighScore}`;
+                        }else if (currentHighScore == score) {
+                            HighScore.innerText = `You got the same score as the highscore, Congrats`;
+                        }else if (currentHighScore < score) {
+                            HighScore.innerText = `You broke the record.. You are the Champion Now!`;
+                            localStorage.setItem("HighScore",score);
+                        }
+                    }
+
+
+                    cardScore.textContent= score;
+                    card.style.display = "block";
+                    cancelAnimationFrame(animationId);
+                }
+            }
+            if (player.x >= hole.x + hole.width && canScore) {
+                canScore = false;
+                score++;
+                scoreIncrement++;
+            }
+
+            if ((hole.x + hole.width) <= 0) {
+                canScore = true;
+                setTimeout(() => {
+                    HolesArray.splice(index,1);
+                }, 0);
+            }
         }
 
-        if ((hole.x + hole.size) <= 0) {
-            canScore = true;
-            setTimeout(() => {
-                HolesArray.splice(index,1);
-            }, 0);
-        }
+
+
 
 
     })
