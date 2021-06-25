@@ -179,7 +179,7 @@ class Block {
         this.x -= this.speed;
     }
 }
-
+// TODO: Moving Obstacle: Still Under Dev
 // class MovingCircle {
 //     constructor(size,speedX){
 //         this.x = canvas.width + size;
@@ -240,6 +240,7 @@ function generateBlocks() {
     }else if (i == 1) {
         HolesArray.push(new Block(RandomNumberGenerator(100,200),ObstacleSpeed));
     }
+    //TODO: Moving Obstacle
     // }else if (i == 2) {
     //     HolesArray.push(new MovingCircle(30,ObstacleSpeed,10));
     // }

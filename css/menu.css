@@ -1,4 +1,5 @@
 a.button {
+    z-index: 10;
     -webkit-appearance: button;
     -moz-appearance: button;
     appearance: button;
@@ -16,6 +17,129 @@ a.button {
 
 
 
+.square1 {
+    position: absolute;
+    z-index: -1;
+    height: 100px;
+    width: 100px;
+    border-radius: 10px;
+    background-color: rgb(0, 238, 255);
+    animation-name: square1;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes square1 {
+    0% {
+        top: 5%;
+        left: 5%;
+        bottom: 95%;
+        transform: rotateZ(0deg);
+        background-color: rgb(153, 0, 255);
+    }
+
+    50% {
+        top: 80%;
+        left: 5%;
+        bottom: 20%;
+        transform: rotateZ(3600deg);
+        background-color: rgb(29, 248, 164);
+    }
+
+    100% {
+        top: 5%;
+        left: 5%;
+        bottom: 95%;
+        transform: rotateZ(0deg);
+        background-color: rgb(153, 0, 255);
+    }
+
+}
+
+.square2 {
+    position: absolute;
+    z-index: -2;
+    height: 100px;
+    width: 100px;
+    border-radius: 10px;
+    background-color: rgb(195, 0, 255);
+    animation-name: square2;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes square2 {
+    0% {
+        top: 5%;
+        right: 5%;
+        bottom: 95%;
+        transform: rotateZ(0deg);
+        background-color: rgb(153, 0, 255);
+    }
+
+    50% {
+        top: 80%;
+        right: 5%;
+        bottom: 20%;
+        transform: rotateZ(3600deg);
+        background-color: rgb(29, 248, 164);
+    }
+
+    100% {
+        top: 5%;
+        right: 5%;
+        bottom: 95%;
+        transform: rotateZ(0deg);
+        background-color: rgb(153, 0, 255);
+    }
+
+}
+
+.square3 {
+    position: absolute;
+    z-index: -3;
+    height: 250px;
+    width: 250px;
+    border-radius: 10px;
+    background-color: rgb(195, 0, 255);
+    animation-name: square3;
+    animation-duration: 30s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes square3 {
+    0% {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        background-color: rgb(211, 32, 32);
+        transform: rotateZ(0deg);
+    }
+
+    50% {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        background-color: rgb(228, 10, 248);
+        transform: rotateZ(3600deg);
+    }
+
+    100% {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        background-color: rgb(0, 97, 189);
+        transform: rotateZ(0deg);
+    }
+
+}
+
 @import url('https://fonts.googleapis.com/css?family=Exo:400,700');
 
 *{
@@ -25,6 +149,7 @@ a.button {
 
 body{
     font-family: 'Exo', sans-serif;
+    background-color: black;
 }
 
 
@@ -37,7 +162,7 @@ body{
 
 .context h1{
     text-align: center;
-    color: #000;
+    color: white;
     font-size: 50px;
 }
 
