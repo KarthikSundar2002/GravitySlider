@@ -179,6 +179,41 @@ class Block {
         this.x -= this.speed;
     }
 }
+
+// class MovingCircle {
+//     constructor(size,speedX){
+//         this.x = canvas.width + size;
+//         this.size = size;
+//         this.type = "MovingCircle";
+//         this.y = canvas.height - wallThickness - size;
+//         this.color = "red";
+//         this.speedX = speedX;
+//         this.speedY = 10;
+//     }
+
+//     draw(){
+//         ctx.fillStyle = this.color;
+//         ctx.beginPath();
+//         ctx.arc(this.x,this.y,this.size,0,2*Math.PI);
+//         ctx.fill();
+//         ctx.closePath();
+//         console.log(this.y);
+//     }
+//     slide(){
+//         this.draw();
+//         this.x -= this.speedX;
+//         this.y -= this.speedY;
+//         if (this.y - this.size == wallThickness) {
+//             this.speedY = this.speedY * -1;
+//             console.log("Ka");
+//         }else if (this.y + this.size == canvas.height - wallThickness) {
+//             this.speedY = this.speedY * -1;
+//             console.log("Ka");
+//         }
+//     }
+// }
+
+
 let player = new Player("easy",60,60,"#5DB7DE");
 let HolesArray = [];
 function startGame() {
@@ -199,12 +234,15 @@ function restartGame(button){
 }
 function generateBlocks() {
     let timeDelay = intervalTime;
-    let i = RandomNumberGenerator(0,1);
+    let i = RandomNumberGenerator(0,2);
     if (i == 0) {
         HolesArray.push(new Hole(RandomNumberGenerator(100,200),RandomNumberGenerator(0,1),ObstacleSpeed));
     }else if (i == 1) {
         HolesArray.push(new Block(RandomNumberGenerator(100,200),ObstacleSpeed));
     }
+    // }else if (i == 2) {
+    //     HolesArray.push(new MovingCircle(30,ObstacleSpeed,10));
+    // }
 
     setTimeout(generateBlocks, timeDelay);
 }
